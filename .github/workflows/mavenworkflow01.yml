@@ -1,0 +1,10 @@
+on:
+    workflow_call:
+
+jobs:
+
+    configuremvn:
+        runs-on: ubuntu-latest
+        steps:
+          - name: mvn version
+            run: mvn version
