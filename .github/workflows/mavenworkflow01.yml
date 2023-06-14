@@ -18,4 +18,10 @@ jobs:
               distribution: 'temurin'
           - name: mvn version
             run: mvn --version
+          - name: get files
+            run: |
+              pwd
+              ls -R
+          #- name: mvn install package
+          #run: mvn clean package install --settings '${settings}' -DattachMuleSources -nsu -DskipMunitTests
 
