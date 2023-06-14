@@ -26,4 +26,6 @@ jobs:
               ls -a -R
               cd TestingSharedPipelines
           - name: mvn install package
-            run: mvn clean package install --settings './muleapp/.settings/settings.xml' -DattachMuleSources -nsu -DskipMunitTests
+            run: |
+              cd muleapp
+              mvn clean package install --settings './.settings/settings.xml' -DattachMuleSources -nsu -DskipMunitTests
