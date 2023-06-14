@@ -21,7 +21,9 @@ jobs:
           - name: get files
             run: |
               pwd
+              cd ..
+              pwd
               ls -R
-          #- name: mvn install package
-          #run: mvn clean package install --settings '${settings}' -DattachMuleSources -nsu -DskipMunitTests
-
+              cd TestingSharedPipelines
+          - name: mvn install package
+            run: mvn clean package install --settings '.\muleapp\.settings\settings.xml' -DattachMuleSources -nsu -DskipMunitTests
