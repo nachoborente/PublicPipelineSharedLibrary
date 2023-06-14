@@ -23,7 +23,7 @@ jobs:
               pwd
               cd ..
               pwd
-              ls -R
+              ls -a -R
               cd TestingSharedPipelines
           - name: mvn install package
-            run: mvn clean package install --settings '.\muleapp\.settings\settings.xml' -DattachMuleSources -nsu -DskipMunitTests
+            run: mvn clean package install --settings './muleapp/.settings/settings.xml' -DattachMuleSources -nsu -DskipMunitTests
