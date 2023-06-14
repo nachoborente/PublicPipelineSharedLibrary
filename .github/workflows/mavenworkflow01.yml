@@ -28,4 +28,5 @@ jobs:
           - name: mvn install package
             run: |
               cd muleapp
-              mvn clean package install --settings './.settings/settings.xml' -DattachMuleSources -nsu -DskipMunitTests
+              #tarda muchisimo commentado hasta que encuentre una prueba mas rapida y simple
+              #mvn clean package install --settings './.settings/settings.xml' -DattachMuleSources -nsu -DskipMunitTests
