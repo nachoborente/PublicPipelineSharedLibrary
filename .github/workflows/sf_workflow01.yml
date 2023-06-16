@@ -26,8 +26,6 @@ jobs:
         with:
           path: sfrepo
 
-      - run: pwd
-      - run: ls -Ra
       #IGNORE Paso 1 obtener algunos valores desde el contexto, como sourcebranch, destinationbranch, (como estan en el contexto obtenerlas cuando las necesite)
       #Paso 2 configurar git y checkout python,carpetas donde trabajar
       - run: git -v
@@ -61,13 +59,12 @@ jobs:
       - run: |
           cd ./sfrepo/sfapp
           sfdx force:config:set instanceUrl=https://creative-otter-1qg0q0-dev-ed.my.salesforce.com --global
-          sfdx force:mdapi:describemetadata -u ${{ secrets.SFORG_DEV_IT }} -f ../describe.log --apiversion ${{ inputs.apiversion }} --loglevel debug;
+      #sfdx force:mdapi:describemetadata -u ${{ secrets.SFORG_DEV_IT }} -f ../describe.log --apiversion ${{ inputs.apiversion }} --loglevel debug;
       #Paso 4: build delta
       - run: |
           cd ./sfrepo
           pwd
-          ptyhon3 /home/runner/work/TestingSharedPipelines/TestingSharedPipelines/pythonlib/mergeDX/merge.py merge_delta -s develop -t main -a ${{ inputs.apiversion }}
-          # --source-folder sfapp
+          ptyhon3 ../pythonlib/mergerDX/merger.py merge_delta -s develop -t main -a ${{ inputs.apiversion }} --source-folder sfapp
       - run: |
              cd ./sfrepo/sfapp
              ls -aR
