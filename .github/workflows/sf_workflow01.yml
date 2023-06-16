@@ -26,7 +26,14 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
-      #- run: npm install 
+      - run: npm install @salesforce/cli --global
+
+      - name: Setup Python
+        uses: actions/setup-python@v3.1.4
+        with:
+            python-version: '3.7' 
+            cache: 'pip' # caching pip dependencies
+      - run: pip install -r pythonlib/requirements.txt
          
 
 #autorize org. sfdx command:
