@@ -38,9 +38,9 @@ jobs:
           node-version: '16'
       - run: |
             npm install @salesforce/cli --global
-            ls / -aR
+            ls /bin/ -a
       - run: 
-            ls / -aR
+            ls /bin -a
 
       - name: Setup Python
         uses: actions/setup-python@v3.1.4
