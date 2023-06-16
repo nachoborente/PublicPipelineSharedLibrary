@@ -41,7 +41,7 @@ jobs:
         run: |
               wget https://developer.salesforce.com/media/salesforce-cli/sfdx-cli/channels/stable/sfdx-cli-linux-x64.tar.xz
               mkdir sfdx-cli
-              tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
+              tar xJf sfdx-cli-linux-x64.tar.xz -C sfdx-cli --strip-components 1
               ./sfdx-cli/install
       - name: Setup Python
         uses: actions/setup-python@v3.1.4
