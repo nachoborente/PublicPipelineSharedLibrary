@@ -55,7 +55,7 @@ jobs:
       - run: |
           cd ./sfrepo/sfapp
           echo '${{ inputs.apiversion }}'
-          sfdx force:mdapi:describemetadata -u ${{ secrets.SFORG_DEV_AT }} -f ..//describe.log --apiversion ${{ inputs.apiversion }} --loglevel debug", returnStatus: true);
+          sfdx force:mdapi:describemetadata -u ${{ secrets.SFORG_DEV_AT }} -f ../describe.log --apiversion ${{ inputs.apiversion }} --loglevel debug;
       #Paso 4: build delta
       - run: |
           cd ./sfrepo
