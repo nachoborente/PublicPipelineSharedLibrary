@@ -60,6 +60,7 @@ jobs:
       - run: sfdx version
       - run: |
           cd ./sfrepo/sfapp
+          sfdx force:config:set instanceUrl=https://creative-otter-1qg0q0-dev-ed.my.salesforce.com --global
           sfdx force:mdapi:describemetadata -u ${{ secrets.SFORG_DEV_AT }} -f ../describe.log --apiversion ${{ inputs.apiversion }} --loglevel debug;
       #Paso 4: build delta
       - run: |
