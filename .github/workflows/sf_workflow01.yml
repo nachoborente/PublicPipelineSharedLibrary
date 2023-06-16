@@ -1,0 +1,49 @@
+on:
+    workflow_call:
+      inputs:
+        testvar:
+          required: true
+          type: string
+
+jobs:
+
+  SFDX_Build_DeployDelta:
+    runs-on: ubuntu-latest
+    steps:
+      #IGNORE Paso 1 obtener algunos valores desde el contexto, como sourcebranch, destinationbranch, (como estan en el contexto obtenerlas cuando las necesite)
+      #IGNORE Paso 2 configurar git y carpetas donde trabajar
+      - run: git -v
+         
+#Paso 3 install sfdx, install python, install requirements, 
+#autorize org. sfdx command:
+# statusCode = sh( script: "sfdx force:auth:jwt:grant --clientid ${SFDC_CONSUMER_KEY} -s --jwtkeyfile '${sfdxKey}' --username ${SFDC_USN} --setalias ${env.SFDX_USER_ALIAS} --instanceurl ${env.SFDX_URL} --json > login.json ", returnStatus: true );
+# handleLogin( statusCode );
+#generate describe, sfdx command: 
+# statusCode = sh(script: "sfdx force:mdapi:describemetadata -u ${SFDC_USN} -f ${env.PATH_SALESFORCE}/describe.log --apiversion ${env.API_VERSION} --loglevel debug", returnStatus: true);
+#Paso 4: build delta
+#withEnv( [ "PYTHONIOENCODING=UTF-8" ] ){
+#  statusCode = sh returnStatus: true, script: "python3 ${env.PATH_SCRIPTS}/mergerDX/merger.py merge_delta -s ${env.gitSourceBranch} -t ${env.gitTargetBranch} -a ${env.API_VERSION} ";
+#  }
+#Paso 5: ValidateRun
+# obtener classes de test a ejecutar y validar si tengo que ejecutar los test
+#dir( "${env.PATH_SALESFORCE}/srcToDeploy" ){
+#        hasApexClasses    = sh( script: "if [ -d 'classes' ]; then echo 'true'; else echo 'false'; fi", returnStdout: true );
+#        hasApexTriggers   = sh( script: "if [ -d 'triggers' ]; then echo 'true'; else echo 'false'; fi", returnStdout: true );
+#    }
+# ejecutar test
+#statusCode = sh( script:"sfdx force:source:deploy -u ${SFDC_USN} -p ${folder} ${testString} --apiversion ${env.API_VERSION} --wait 90 -c --json > validate.json", returnStatus: true );
+# Crear artifact del status.json
+#archiveArtifacts allowEmptyArchive: true, artifacts: "validate.json", fingerprint: true;
+# Generar repo HTML y subirlo como artifact
+#sh "python3 ${env.PATH_SCRIPTS}/logParserDX/dxLogParser.py logParser -p validate.json -O validate-Report.html";
+#archiveArtifacts allowEmptyArchive: true, artifacts: "validate-Report.html", fingerprint: true;
+#Paso 6: Deploy
+# si los test han ido bien, ejecutar deploy
+
+# subir deploy.json como artifact
+
+
+
+
+
+
