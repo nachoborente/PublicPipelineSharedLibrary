@@ -4,11 +4,16 @@ on:
         testvar:
           required: true
           type: string
+        apiversion:
+            required: true
+            type: string
 
 jobs:
 
   SFDX_Build_DeployDelta:
     runs-on: ubuntu-latest
+    env:
+        SalesforcePath: 
     steps:
       - run: pwd
       - name: Checkout python libraries
@@ -16,6 +21,11 @@ jobs:
         with:
           repository: Accenture/ALM-SF-DX-Python-Tools
           path: pythonlib
+      - name: Checkout code repo
+        uses: actions/checkout@v3
+        with:
+          path: sfrepo
+
       - run: pwd
       - run: ls -Ra
       #IGNORE Paso 1 obtener algunos valores desde el contexto, como sourcebranch, destinationbranch, (como estan en el contexto obtenerlas cuando las necesite)
@@ -34,14 +44,26 @@ jobs:
             python-version: '3.7' 
             cache: 'pip' # caching pip dependencies
       - run: pip install -r pythonlib/requirements.txt
-         
+      
+      #autorize org. sfdx command:      
+      #vamos usar un access token, por lo que podemos saltarnos este paso
+      # statusCode = sh( script: "sfdx force:auth:jwt:grant --clientid ${SFDC_CONSUMER_KEY} -s --jwtkeyfile '${sfdxKey}' --username ${SFDC_USN} --setalias ${env.SFDX_USER_ALIAS} --instanceurl ${env.SFDX_URL} --json > login.json ", returnStatus: true );
+      # handleLogin( statusCode );
+      
+      #generate describe, sfdx command: 
+      # statusCode = sh(script: "sfdx force:mdapi:describemetadata -u ${SFDC_USN} -f ${env.PATH_SALESFORCE}/describe.log --apiversion ${env.API_VERSION} --loglevel debug", returnStatus: true);
+      - run: |
+          cd ./sfrepo/sfapp
+          echo '${{ inputs.apiversion }}'
+          sfdx force:mdapi:describemetadata -u ${{ secrets.SFORG_DEV_AT }} -f ..//describe.log --apiversion ${{ inputs.apiversion }} --loglevel debug", returnStatus: true);
+      #Paso 4: build delta
+      - run: |
+          cd ./sfrepo
+          ptyhon3 ../pythonlib/mergeDX/merge.py merge_delta -s develop -t main -a ${{ inputs.apiversion }} --source-folder sfapp
+          pwd
+          cd ./sfapp -aR
 
-#autorize org. sfdx command:
-# statusCode = sh( script: "sfdx force:auth:jwt:grant --clientid ${SFDC_CONSUMER_KEY} -s --jwtkeyfile '${sfdxKey}' --username ${SFDC_USN} --setalias ${env.SFDX_USER_ALIAS} --instanceurl ${env.SFDX_URL} --json > login.json ", returnStatus: true );
-# handleLogin( statusCode );
-#generate describe, sfdx command: 
-# statusCode = sh(script: "sfdx force:mdapi:describemetadata -u ${SFDC_USN} -f ${env.PATH_SALESFORCE}/describe.log --apiversion ${env.API_VERSION} --loglevel debug", returnStatus: true);
-#Paso 4: build delta
+
 #withEnv( [ "PYTHONIOENCODING=UTF-8" ] ){
 #  statusCode = sh returnStatus: true, script: "python3 ${env.PATH_SCRIPTS}/mergerDX/merger.py merge_delta -s ${env.gitSourceBranch} -t ${env.gitTargetBranch} -a ${env.API_VERSION} ";
 #  }
