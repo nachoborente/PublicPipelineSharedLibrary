@@ -10,11 +10,19 @@ jobs:
   SFDX_Build_DeployDelta:
     runs-on: ubuntu-latest
     steps:
+      - run: pwd
+      - run: ls -Ra
       #IGNORE Paso 1 obtener algunos valores desde el contexto, como sourcebranch, destinationbranch, (como estan en el contexto obtenerlas cuando las necesite)
-      #IGNORE Paso 2 configurar git y carpetas donde trabajar
+      #Paso 2 configurar git y checkout python,carpetas donde trabajar
       - run: git -v
+      
+      #Paso 3 install sfdx, install python and requirements, 
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      #- run: npm install 
          
-#Paso 3 install sfdx, install python, install requirements, 
+
 #autorize org. sfdx command:
 # statusCode = sh( script: "sfdx force:auth:jwt:grant --clientid ${SFDC_CONSUMER_KEY} -s --jwtkeyfile '${sfdxKey}' --username ${SFDC_USN} --setalias ${env.SFDX_USER_ALIAS} --instanceurl ${env.SFDX_URL} --json > login.json ", returnStatus: true );
 # handleLogin( statusCode );
