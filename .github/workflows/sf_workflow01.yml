@@ -64,7 +64,7 @@ jobs:
       - run: |
           cd ./sfrepo
           pwd
-          ptyhon3 ../pythonlib/mergerDX/merger.py merge_delta -s develop -t main -a ${{ inputs.apiversion }} --source-folder sfapp
+          ptyhon3 /home/runner/work/TestingSharedPipelines/TestingSharedPipelines/pythonlib/mergerDX/merger.py merge_delta -s develop -t main -a ${{ inputs.apiversion }} --source-folder sfapp
       - run: |
              cd ./sfrepo/sfapp
              ls -aR
