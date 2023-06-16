@@ -65,9 +65,11 @@ jobs:
       #Paso 4: build delta
       - run: |
           cd ./sfrepo
-          ptyhon3 ../pythonlib/mergeDX/merge.py merge_delta -s develop -t main -a ${{ inputs.apiversion }} --source-folder sfapp
           pwd
-          cd ./sfapp -aR
+          ptyhon3 ../pythonlib/mergeDX/merge.py merge_delta -s develop -t main -a ${{ inputs.apiversion }} --source-folder sfapp
+      - run: |
+             cd ./sfrepo/sfapp
+             ls -aR
 
 
 #withEnv( [ "PYTHONIOENCODING=UTF-8" ] ){
