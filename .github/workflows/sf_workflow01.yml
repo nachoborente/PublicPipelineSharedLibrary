@@ -61,7 +61,7 @@ jobs:
       # statusCode = sh(script: "sfdx force:mdapi:describemetadata -u ${SFDC_USN} -f ${env.PATH_SALESFORCE}/describe.log --apiversion ${env.API_VERSION} --loglevel debug", returnStatus: true);
       - run: sfdx version
       - run: |
-          cd ./sfrepo/sfapp
+          cd ./sfrepo
           sfdx force:config:set instanceUrl=https://creative-otter-1qg0q0-dev-ed.my.salesforce.com --global
       #sfdx force:mdapi:describemetadata -u ${{ secrets.SFORG_DEV_IT }} -f ../describe.log --apiversion ${{ inputs.apiversion }} --loglevel debug;
       #Paso 4: build delta
@@ -69,9 +69,9 @@ jobs:
           cd ./sfrepo
           pwd
           python3 ../pythonlib/mergerDX/merger.py merge_delta -s develop -t main -a ${{ inputs.apiversion }}
-      #python3 /home/runner/work/TestingSharedPipelines/TestingSharedPipelines/pythonlib/mergerDX/merger.py merge_delta -s develop -t main -a ${{ inputs.apiversion }} --source-folder sfapp
+      #python3 /home/runner/work/TestingSharedPipelines/TestingSharedPipelines/pythonlib/mergerDX/merger.py merge_delta -s develop -t main -a ${{ inputs.apiversion }}
       - run: |
-             cd ./sfrepo/sfapp
+             cd ./sfrepo
              ls -aR
 
 
