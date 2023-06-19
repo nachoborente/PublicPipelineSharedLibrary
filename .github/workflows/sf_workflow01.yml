@@ -7,6 +7,12 @@ on:
         apiversion:
             required: true
             type: string
+        SF_ORG_USERNAME:
+            required: true
+            type: string
+        SF_ORG_URL:
+          required: true
+          type: string
 
 jobs:
 
@@ -52,6 +58,16 @@ jobs:
             cache: 'pip' # caching pip dependencies
       - run: pip install -r pythonlib/requirements.txt
       
+      - name: Generate server.key file
+        run: |
+            cd ./sfrepo
+            echo "${{ secrets.SERVERKEY }}"> server.key
+            ls -a
+      - name: autorize org
+        run: |
+            cd ./sfrepo
+            sfdx force:auth:jwt:grant --clientid ${{ secrets.SFORG_DEV_CKEY }} -s --jwtkeyfile './server.key' --username ${{ inputs.SF_ORG_USERNAME }} --setalias ${{ inputs.SF_ORG_USERNAME }} --instanceurl ${{ inputs.SF_ORG_URL }} --json > login.json
+
       #autorize org. sfdx command:      
       #vamos usar un access token, por lo que podemos saltarnos este paso
       # statusCode = sh( script: "sfdx force:auth:jwt:grant --clientid ${SFDC_CONSUMER_KEY} -s --jwtkeyfile '${sfdxKey}' --username ${SFDC_USN} --setalias ${env.SFDX_USER_ALIAS} --instanceurl ${env.SFDX_URL} --json > login.json ", returnStatus: true );
@@ -63,7 +79,7 @@ jobs:
       - run: |
           cd ./sfrepo
           sfdx force:config:set instanceUrl=https://creative-otter-1qg0q0-dev-ed.my.salesforce.com --global
-      #sfdx force:mdapi:describemetadata -u ${{ secrets.SFORG_DEV_IT }} -f ../describe.log --apiversion ${{ inputs.apiversion }} --loglevel debug;
+          sfdx force:mdapi:describemetadata -u ${{ inputs.SF_ORG_USERNAME }} -f ./describe.log --apiversion ${{ inputs.apiversion }} --loglevel debug;
       #Paso 4: build delta
       - run: |
           cd ./sfrepo
