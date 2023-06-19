@@ -28,7 +28,11 @@ jobs:
 
       #IGNORE Paso 1 obtener algunos valores desde el contexto, como sourcebranch, destinationbranch, (como estan en el contexto obtenerlas cuando las necesite)
       #Paso 2 configurar git y checkout python,carpetas donde trabajar
-      - run: git -v
+      #[FATAL] Both 'user.name' and 'user.email' configuration keys must be set up, exiting...
+      - run: |
+            git -v
+            git config --global user.name "Github Actions"
+            git config --global user.email "devops@accenture.com"
       
       #Paso 3 install sfdx, install python and requirements, 
       - uses: actions/setup-node@v3
