@@ -62,11 +62,13 @@ jobs:
         run: |
             cd ./sfrepo
             echo "${{ secrets.SERVERKEY }}"> server.key
-            ls -a
+            cat ./server.key
       - name: autorize org
         run: |
             cd ./sfrepo
-            sfdx force:auth:jwt:grant --clientid ${{ secrets.SFORG_DEV_CKEY }} -s --jwtkeyfile './server.key' --username ${{ inputs.SF_ORG_USERNAME }} --setalias ${{ inputs.SF_ORG_USERNAME }} --instanceurl ${{ inputs.SF_ORG_URL }} --json > login.json
+            sfdx force:auth:jwt:grant --clientid ${{ secrets.SFORG_DEV_CKEY }} -s --jwtkeyfile './server.key' --username ${{ inputs.SF_ORG_USERNAME }} --setalias ${{ inputs.SF_ORG_USERNAME }} --instanceurl ${{ inputs.SF_ORG_URL }} --json
+      
+      #sfdx force:auth:jwt:grant --clientid ${{ secrets.SFORG_DEV_CKEY }} -s --jwtkeyfile './server.key' --username ${{ inputs.SF_ORG_USERNAME }} --setalias ${{ inputs.SF_ORG_USERNAME }} --instanceurl ${{ inputs.SF_ORG_URL }} --json > login.json
 
       #autorize org. sfdx command:      
       #vamos usar un access token, por lo que podemos saltarnos este paso
