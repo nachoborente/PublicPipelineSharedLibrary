@@ -7,12 +7,6 @@ on:
         apiversion:
             required: true
             type: string
-        SFORG_USERNAME:
-            required: true
-            type: string
-        SFORG_URL:
-          required: true
-          type: string
 
 jobs:
 
@@ -24,8 +18,8 @@ jobs:
     steps:
       - run: |
              pwd
-             echo '${{ inputs.SFORG_USERNAME }}'
              echo '${{ vars.SFORG_USERNAME }}'
+             echo '${{ vars.SFORG_URL }}'
              
       - name: Checkout python libraries
         uses: actions/checkout@v3
@@ -75,9 +69,9 @@ jobs:
       - name: autorize org
         run: |
             cd ./sfrepo
-            sfdx force:auth:jwt:grant --clientid ${{ secrets.SFORG_CKEY }} -s --jwtkeyfile './server.key' --username ${{ inputs.SFORG_USERNAME }} --setalias ${{ inputs.SFORG_USERNAME }} --instanceurl ${{ inputs.SFORG_URL }} --json
+            sfdx force:auth:jwt:grant --clientid ${{ secrets.SFORG_CKEY }} -s --jwtkeyfile './server.key' --username ${{ vars.SFORG_USERNAME }} --setalias ${{ vars.SFORG_USERNAME }} --instanceurl ${{ vars.SFORG_URL }} --json
       
-      #sfdx force:auth:jwt:grant --clientid ${{ secrets.SFORG_CKEY }} -s --jwtkeyfile './server.key' --username ${{ inputs.SFORG_USERNAME }} --setalias ${{ inputs.SFORG_USERNAME }} --instanceurl ${{ inputs.SFORG_URL }} --json > login.json
+      #> login.json
 
       #autorize org. sfdx command:      
       #vamos usar un access token, por lo que podemos saltarnos este paso
@@ -90,7 +84,7 @@ jobs:
       - run: |
           cd ./sfrepo
           sfdx force:config:set instanceUrl=https://creative-otter-1qg0q0-dev-ed.my.salesforce.com --global
-          sfdx force:mdapi:describemetadata -u ${{ inputs.SFORG_USERNAME }} -f ./describe.log --apiversion ${{ inputs.apiversion }} --loglevel debug;
+          sfdx force:mdapi:describemetadata -u ${{ vars.SFORG_USERNAME }} -f ./describe.log --apiversion ${{ inputs.apiversion }} --loglevel debug;
       #Paso 4: build delta
       - run: |
           cd ./sfrepo
