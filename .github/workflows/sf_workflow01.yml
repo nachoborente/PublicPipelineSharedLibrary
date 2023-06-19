@@ -18,10 +18,13 @@ jobs:
 
   SFDX_Build_DeployDelta:
     runs-on: ubuntu-latest
+    environment: ${{ github.ref_name }}
     env:
         SalesforcePath: "/nachotest"
     steps:
-      - run: pwd
+      - run: |
+             pwd
+             
       - name: Checkout python libraries
         uses: actions/checkout@v3
         with:
