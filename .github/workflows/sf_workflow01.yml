@@ -24,7 +24,8 @@ jobs:
     steps:
       - run: |
              pwd
-             ${{ inputs.SFORG_USERNAME }}
+             echo '${{ inputs.SFORG_USERNAME }}'
+             echo '${{ vars.SFORG_USERNAME }}'
              
       - name: Checkout python libraries
         uses: actions/checkout@v3
