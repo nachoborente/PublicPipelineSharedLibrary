@@ -7,10 +7,10 @@ on:
         apiversion:
             required: true
             type: string
-        SF_ORG_USERNAME:
+        SFORG_USERNAME:
             required: true
             type: string
-        SF_ORG_URL:
+        SFORG_URL:
           required: true
           type: string
 
@@ -61,14 +61,18 @@ jobs:
       - name: Generate server.key file
         run: |
             cd ./sfrepo
-            echo "${{ secrets.SERVERKEY }}"> server.key
+            echo "${{ secrets.SF_SERVERKEY }}"> server.key
             cat ./server.key
+      - uses: actions/upload-artifact@v3
+        with:
+          name: serverkey
+          path: ./sfrepo/server.key          
       - name: autorize org
         run: |
             cd ./sfrepo
-            sfdx force:auth:jwt:grant --clientid ${{ secrets.SFORG_DEV_CKEY }} -s --jwtkeyfile './server.key' --username ${{ inputs.SF_ORG_USERNAME }} --setalias ${{ inputs.SF_ORG_USERNAME }} --instanceurl ${{ inputs.SF_ORG_URL }} --json
+            sfdx force:auth:jwt:grant --clientid ${{ secrets.SFORG_CKEY }} -s --jwtkeyfile './server.key' --username ${{ inputs.SFORG_USERNAME }} --setalias ${{ inputs.SFORG_USERNAME }} --instanceurl ${{ inputs.SFORG_URL }} --json
       
-      #sfdx force:auth:jwt:grant --clientid ${{ secrets.SFORG_DEV_CKEY }} -s --jwtkeyfile './server.key' --username ${{ inputs.SF_ORG_USERNAME }} --setalias ${{ inputs.SF_ORG_USERNAME }} --instanceurl ${{ inputs.SF_ORG_URL }} --json > login.json
+      #sfdx force:auth:jwt:grant --clientid ${{ secrets.SFORG_CKEY }} -s --jwtkeyfile './server.key' --username ${{ inputs.SFORG_USERNAME }} --setalias ${{ inputs.SFORG_USERNAME }} --instanceurl ${{ inputs.SFORG_URL }} --json > login.json
 
       #autorize org. sfdx command:      
       #vamos usar un access token, por lo que podemos saltarnos este paso
@@ -81,7 +85,7 @@ jobs:
       - run: |
           cd ./sfrepo
           sfdx force:config:set instanceUrl=https://creative-otter-1qg0q0-dev-ed.my.salesforce.com --global
-          sfdx force:mdapi:describemetadata -u ${{ inputs.SF_ORG_USERNAME }} -f ./describe.log --apiversion ${{ inputs.apiversion }} --loglevel debug;
+          sfdx force:mdapi:describemetadata -u ${{ inputs.SFORG_USERNAME }} -f ./describe.log --apiversion ${{ inputs.apiversion }} --loglevel debug;
       #Paso 4: build delta
       - run: |
           cd ./sfrepo
