@@ -33,12 +33,11 @@ jobs:
           fetch-depth: 0
 
       #IGNORE Paso 1 obtener algunos valores desde el contexto, como sourcebranch, destinationbranch, (como estan en el contexto obtenerlas cuando las necesite)
-      #Paso 2 configurar git y checkout python,carpetas donde trabajar
-      #[FATAL] Both 'user.name' and 'user.email' configuration keys must be set up, exiting...
+      # configurar git (obtener de las variables grobales)     
       - run: |
             git -v
-            git config --global user.name "nacho borente"
-            git config --global user.email "i.borentegonzalez@accenture.com"
+            git config --global user.name ${{ vars.GIT_USERNAME }}
+            git config --global user.email ${{ vars.GIT_EMAIL }}
       
       #Paso 3 install sfdx, install python and requirements, 
       - uses: actions/setup-node@v3
@@ -87,15 +86,24 @@ jobs:
           pwd
           python3 ../pythonlib/mergerDX/merger.py merge_delta -s develop -t main -a ${{ inputs.apiversion }}
       #python3 /home/runner/work/TestingSharedPipelines/TestingSharedPipelines/pythonlib/mergerDX/merger.py merge_delta -s develop -t main -a ${{ inputs.apiversion }}
+      #Paso 5: ValidateRun
       - run: |
-             cd ./sfrepo
-             ls -aR
+          cd ./sfrepo/srcToDeploy
+          hasApexClasses = if [ -d 'classes' ]; then echo 'true'; else echo 'false'; fi >> "$GITHUB_ENV"
+          hasApexTriggers = if [ -d 'triggers' ]; then echo 'true'; else echo 'false'; fi >> "$GITHUB_ENV"
+          EXPORT $test = "hola test"
+
+      #PASO 6: VALIDATE VALUE OF ENV VARIBLES
+      - run: |
+          echo "${{ env.hasApexClasses }}"
+          echo "${{ env.hasApexTriggers }}"
+          echo $test
+
+          hasApexClasses = if [ -d 'classes' ]; then echo 'true'; else echo 'false'; fi >> "$GITHUB_ENV"
+          hasApexTriggers = if [ -d 'triggers' ]; then echo 'true'; else echo 'false'; fi >> "$GITHUB_ENV"
 
 
-#withEnv( [ "PYTHONIOENCODING=UTF-8" ] ){
-#  statusCode = sh returnStatus: true, script: "python3 ${env.PATH_SCRIPTS}/mergerDX/merger.py merge_delta -s ${env.gitSourceBranch} -t ${env.gitTargetBranch} -a ${env.API_VERSION} ";
-#  }
-#Paso 5: ValidateRun
+
 # obtener classes de test a ejecutar y validar si tengo que ejecutar los test
 #dir( "${env.PATH_SALESFORCE}/srcToDeploy" ){
 #        hasApexClasses    = sh( script: "if [ -d 'classes' ]; then echo 'true'; else echo 'false'; fi", returnStdout: true );
