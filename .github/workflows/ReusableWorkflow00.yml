@@ -50,8 +50,8 @@ jobs:
           python-version: '3.7' 
       - run: | 
           cd ./sfrepo
-          mkdir /srcToDeploy/classes
-          mkdir /srcToDeploy/triggers
+          mkdir ./srcToDeploy/classes
+          mkdir ./srcToDeploy/triggers
       - run: |
           cd ./sfrepo/srcToDeploy
           hasApexClasses = if [ -d 'classes' ]; then echo 'true'; else echo 'false'; fi >> "$GITHUB_ENV"
