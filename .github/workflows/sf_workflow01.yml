@@ -62,18 +62,6 @@ jobs:
             cd ./sfrepo
             echo "${{ secrets.SF_SERVERKEY }}"> server.key
             cat ./server.key
-      - uses: actions/upload-artifact@v3
-        with:
-          name: serverkey
-          path: ./sfrepo/server.key          
-      - name: Save command
-        run: |
-            cd ./sfrepo
-            echo "sfdx force:auth:jwt:grant --clientid ${{ secrets.SFORG_CKEY }} -s --jwtkeyfile './server.key' --username ${{ vars.SFORG_USERNAME }} --setalias ${{ vars.SFORG_USERNAME }} --instanceurl ${{ vars.SFORG_URL }} --json"> command.txt
-      - uses: actions/upload-artifact@v3
-        with:
-          name: command.txt
-          path: ./sfrepo/command.txt
       - name: autorize org
         run: |
             cd ./sfrepo
