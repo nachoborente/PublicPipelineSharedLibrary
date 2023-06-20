@@ -37,13 +37,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
-
-      - name: Install Salesforce CLI
-        run: |
-          wget https://developer.salesforce.com/media/salesforce-cli/sfdx-cli/channels/stable/sfdx-cli-linux-x64.tar.xz
-          mkdir sfdx-cli
-          tar xJf sfdx-cli-linux-x64.tar.xz -C sfdx-cli --strip-components 1
-          ./sfdx-cli/install
       - name: Setup Python
         uses: actions/setup-python@v3.1.4
         with:
@@ -58,7 +51,7 @@ jobs:
           cd ./sfrepo/srcToDeploy
           if [ -d 'classes' ]; then echo 'hasApexClasses=true' >> '$GITHUB_ENV'; else echo 'hasApexClasses=false' >> '$GITHUB_ENV'; fi
           if [ -d 'classes' ]; then echo 'hasApexTriggers=true' >> '$GITHUB_ENV'; else echo 'hasApexTriggers=false' >> '$GITHUB_ENV'; fi
-          EXPORT $test = "hola test"
+          test="hola test"
     #PASO 6: VALIDATE VALUE OF ENV VARIBLES
       - run: |
           echo "${{ env.hasApexClasses }}"
