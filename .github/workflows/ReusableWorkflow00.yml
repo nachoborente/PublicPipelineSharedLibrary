@@ -53,7 +53,7 @@ jobs:
           if [ -d 'classes' ]; then echo "hasApexTriggers=true" >> "$GITHUB_ENV"; else echo "hasApexTriggers=false" >> "$GITHUB_ENV"; fi
           echo "hasvalue=true"  >> "$GITHUB_ENV"
           if [ -d 'classes' ] then
-             echo "test01=true" >> "$GITHUB_ENV
+             echo "test01=true" >> "$GITHUB_ENV"
           else 
             echo "test01=false" >> "$GITHUB_ENV"
           fi
