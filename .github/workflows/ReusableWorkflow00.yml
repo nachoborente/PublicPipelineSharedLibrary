@@ -49,16 +49,22 @@ jobs:
           mkdir triggers
       - run: |
           cd ./sfrepo/srcToDeploy
-          if [ -d 'classes' ]; then echo 'hasApexClasses=true' >> '$GITHUB_ENV'; else echo 'hasApexClasses=false' >> '$GITHUB_ENV'; fi
-          if [ -d 'classes' ]; then echo 'hasApexTriggers=true' >> '$GITHUB_ENV'; else echo 'hasApexTriggers=false' >> '$GITHUB_ENV'; fi
-          echo 'hasvalue=true' >> '$GITHUB_ENV'
+          if [ -d 'classes' ]; then echo "hasApexClasses=true" >> "$GITHUB_ENV"; else echo "hasApexClasses=false" >> "$GITHUB_ENV"; fi
+          if [ -d 'classes' ]; then echo "hasApexTriggers=true" >> "$GITHUB_ENV"; else echo "hasApexTriggers=false" >> "$GITHUB_ENV"; fi
+          echo "hasvalue=true"  >> "$GITHUB_ENV"
+          if [ -d 'classes' ] then
+             echo "test01=true" >> "$GITHUB_ENV
+          else 
+            echo "test01=false" >> "$GITHUB_ENV"
+          fi
           test="hola test"
     #PASO 6: VALIDATE VALUE OF ENV VARIBLES
       - run: |
-          echo "hasvalue= ${{ env.hasvalue }}"
-          echo "hasApexClasses= ${{ env.hasApexClasses }}"
-          echo "hasApexTriggers= ${{ env.hasApexTriggers }}"
-          echo $test > nacho.txt
+          echo "hasvalue= ${{ env.hasvalue }}" >> nacho.txt
+          echo "hasApexClasses= ${{ env.hasApexClasses }}" >> nacho.txt
+          echo "hasApexTriggers= ${{ env.hasApexTriggers }}" >> nacho.txt
+          echo "test01= ${{ env.test01 }}" >> nacho.txt
+          echo $test  >> nacho.txt
       - uses: actions/upload-artifact@v3
         with:
           name: nacho.txt
