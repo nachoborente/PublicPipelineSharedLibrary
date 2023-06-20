@@ -51,12 +51,18 @@ jobs:
           cd ./sfrepo/srcToDeploy
           if [ -d 'classes' ]; then echo 'hasApexClasses=true' >> '$GITHUB_ENV'; else echo 'hasApexClasses=false' >> '$GITHUB_ENV'; fi
           if [ -d 'classes' ]; then echo 'hasApexTriggers=true' >> '$GITHUB_ENV'; else echo 'hasApexTriggers=false' >> '$GITHUB_ENV'; fi
+          echo 'hasvalue=true' >> '$GITHUB_ENV'
           test="hola test"
     #PASO 6: VALIDATE VALUE OF ENV VARIBLES
       - run: |
-          echo "${{ env.hasApexClasses }}"
-          echo "${{ env.hasApexTriggers }}"
-          echo $test
+          echo "hasvalue= ${{ env.hasvalue }}"
+          echo "hasApexClasses= ${{ env.hasApexClasses }}"
+          echo "hasApexTriggers= ${{ env.hasApexTriggers }}"
+          echo $test > nacho.txt
+      - uses: actions/upload-artifact@v3
+        with:
+          name: nacho.txt
+          path: ./nacho.txt
     #PASO 7: EJECUTAR TEST VALIDACION
     #PASO 8: CREAR ARTEFACTO validate.json
     #PASO 9: CREAR report html a partir del fichero validate.json
