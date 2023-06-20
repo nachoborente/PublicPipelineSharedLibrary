@@ -52,11 +52,6 @@ jobs:
           if [ -d 'classes' ]; then echo "hasApexClasses=true" >> "$GITHUB_ENV"; else echo "hasApexClasses=false" >> "$GITHUB_ENV"; fi
           if [ -d 'classes' ]; then echo "hasApexTriggers=true" >> "$GITHUB_ENV"; else echo "hasApexTriggers=false" >> "$GITHUB_ENV"; fi
           echo "hasvalue=true"  >> "$GITHUB_ENV"
-          if [ -d 'classes' ] then
-             echo "test01=true" >> "$GITHUB_ENV"
-          else 
-            echo "test01=false" >> "$GITHUB_ENV"
-          fi
           test="hola test"
     #PASO 6: VALIDATE VALUE OF ENV VARIBLES
       - run: |
